@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">StoryApp</string>
+
+
+
+    <string name="error_email_not_valid">Email is not valid</string>
+    <string name="error_password_not_valid">Password is not valid</string>
+    <string name="must_filled">Must be filled</string>
+
+
 </resources>
