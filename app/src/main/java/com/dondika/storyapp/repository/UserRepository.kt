@@ -8,6 +8,9 @@ class UserRepository private constructor(private val apiService: ApiService){
     suspend fun login(loginRequest: LoginRequest) = apiService.login(loginRequest)
 
 
+    suspend fun getAllStories(token: String) = apiService.getAllStories("Bearer $token")
+
+
     companion object {
         private var INSTANCE: UserRepository? = null
         fun getInstance(apiService: ApiService): UserRepository {

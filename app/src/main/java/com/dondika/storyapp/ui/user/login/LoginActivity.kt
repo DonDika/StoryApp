@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
     private fun onSuccess(loginResult: LoginResult){
         Toast.makeText(this, "Welcome ${loginResult.name} your token ${loginResult.token}", Toast.LENGTH_SHORT).show()
         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+        intent.putExtra(HomeActivity.EXTRA_TOKEN, loginResult.token)
         startActivity(intent)
         finish()
     }

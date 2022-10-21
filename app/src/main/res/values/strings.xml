@@ -8,4 +8,7 @@
     <string name="must_filled">Must be filled</string>
 
 
+    <string name="created_add">Created at %1$s,</string>
+
+
 </resources>
