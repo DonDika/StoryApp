@@ -1,5 +1,6 @@
 package com.dondika.storyapp.ui.home
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.dondika.storyapp.R
 import com.dondika.storyapp.data.remote.stories.ListStoryItem
 import com.dondika.storyapp.databinding.ItemStoryBinding
+import com.dondika.storyapp.ui.detail.DetailActivity
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
@@ -41,6 +43,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 tvCreateDate.text = binding.root.resources.getString(R.string.created_add, storiesData.createdAt)
 
                 //intent
+                root.setOnClickListener {
+                    val intent = Intent(it.context, DetailActivity::class.java)
+                    intent.putExtra(DetailActivity.EXTRA_USER, storiesData)
+                    it.context.startActivity(intent)
+                }
+
 
             }
         }
