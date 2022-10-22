@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dondika.storyapp.R
+import com.dondika.storyapp.data.remote.stories.ListStoryItem
 import com.dondika.storyapp.databinding.ActivityHomeBinding
+import com.dondika.storyapp.ui.detail.DetailActivity
 import com.dondika.storyapp.ui.upload.UploadStoryActivity
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
@@ -14,7 +15,7 @@ import com.dondika.storyapp.utils.UserViewModelFactory
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var homeAdapter: HomeAdapter
+    private lateinit var storyAdapter: StoryAdapter
 
     private val homeViewModel: HomeViewModel by viewModels{
         UserViewModelFactory.getInstance(this)
@@ -47,7 +48,8 @@ class HomeActivity : AppCompatActivity() {
 
                 }
                 is Result.Success -> result.data?.listStory?.let {
-                    homeAdapter.setData(it)
+                    //homeAdapter.setData(it)
+                    storyAdapter.submitList(it)
                 }
                 is Result.Error -> result.message?.let {
 
@@ -58,14 +60,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setAdapter(){
-        homeAdapter = HomeAdapter()
+        storyAdapter = StoryAdapter()
         binding.rvStories.apply {
             layoutManager = LinearLayoutManager(this@HomeActivity)
             setHasFixedSize(true)
-            adapter = homeAdapter
+            adapter = storyAdapter
         }
+        storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback{
+            override fun onItemClicked(listStoryItem: ListStoryItem) {
+                val intent = Intent(this@HomeActivity, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_USER, listStoryItem)
+                startActivity(intent)
+            }
+        })
     }
-
 
 
     companion object {
