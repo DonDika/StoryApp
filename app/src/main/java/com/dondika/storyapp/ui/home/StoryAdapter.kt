@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.dondika.storyapp.R
 import com.dondika.storyapp.data.remote.stories.ListStoryItem
 import com.dondika.storyapp.databinding.ItemStoryBinding
+import com.dondika.storyapp.utils.Utils
 
 class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
@@ -37,7 +38,7 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_
                     .into(imgStories)
                 tvName.text = storiesData.name
                 tvDesc.text = storiesData.description
-                tvCreateDate.text = binding.root.resources.getString(R.string.created_add, storiesData.createdAt)
+                tvCreateDate.text = binding.root.resources.getString(R.string.created_add, Utils.formatDate(storiesData.createdAt))
 
                 root.setOnClickListener {
                     onItemClickCallback.onItemClicked(storiesData)

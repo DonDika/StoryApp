@@ -7,7 +7,7 @@
     <string name="must_filled">Must be filled</string>
 
 
-    <string name="created_add">Created at %1$s,</string>
+    <string name="created_add">Created at %1$s</string>
 
     <string name="hint_description_edit_text">Enter your description</string>
 

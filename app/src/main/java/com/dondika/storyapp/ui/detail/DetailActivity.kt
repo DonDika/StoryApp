@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.dondika.storyapp.R
 import com.dondika.storyapp.data.remote.stories.ListStoryItem
 import com.dondika.storyapp.databinding.ActivityDetailBinding
+import com.dondika.storyapp.utils.Utils
 
 class DetailActivity : AppCompatActivity() {
 
@@ -33,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
 
                 tvName.text = userData.name
                 tvDesc.text = userData.description
-                tvCreateDate.text = binding.root.resources.getString(R.string.created_add, userData.createdAt)
+                tvCreateDate.text = binding.root.resources.getString(R.string.created_add, Utils.formatDate(userData.createdAt))
 
                 supportActionBar!!.title = userData.name
             }

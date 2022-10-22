@@ -2,12 +2,14 @@ package com.dondika.storyapp.utils
 
 import android.content.ContentResolver
 import android.content.Context
+import android.net.ParseException
 import android.net.Uri
 import android.os.Environment
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,6 +37,26 @@ object Utils  {
     fun createTempFile(context: Context): File {
         val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(timeStamp, ".jpg", storageDir)
+    }
+
+
+    fun formatDate(currentDate: String): String? {
+        val currentFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        val targetFormat = "dd MMM - HH:mm"
+        val timezone = "GMT"
+        val currentDf: DateFormat = SimpleDateFormat(currentFormat, Locale.getDefault())
+        currentDf.timeZone = TimeZone.getTimeZone(timezone)
+        val targetDf: DateFormat = SimpleDateFormat(targetFormat, Locale.getDefault())
+        var targetDate: String? = null
+        try {
+            val date = currentDf.parse(currentDate)
+            if (date != null) {
+                targetDate = targetDf.format(date)
+            }
+        } catch (ex: ParseException){
+            ex.printStackTrace()
+        }
+        return targetDate
     }
 
 }
