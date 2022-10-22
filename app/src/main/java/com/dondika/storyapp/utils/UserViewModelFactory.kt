@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dondika.storyapp.di.Injection
 import com.dondika.storyapp.repository.UserRepository
 import com.dondika.storyapp.ui.home.HomeViewModel
+import com.dondika.storyapp.ui.upload.UploadStoryViewModel
 import com.dondika.storyapp.ui.user.login.LoginViewModel
 
 class UserViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -18,6 +19,9 @@ class UserViewModelFactory(private val repository: UserRepository) : ViewModelPr
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(UploadStoryViewModel::class.java) -> {
+                UploadStoryViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

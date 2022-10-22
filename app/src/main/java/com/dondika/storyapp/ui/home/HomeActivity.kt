@@ -1,11 +1,13 @@
 package com.dondika.storyapp.ui.home
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dondika.storyapp.R
 import com.dondika.storyapp.databinding.ActivityHomeBinding
+import com.dondika.storyapp.ui.upload.UploadStoryActivity
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
 
@@ -26,7 +28,14 @@ class HomeActivity : AppCompatActivity() {
 
         getAllStories()
         setAdapter()
+        setListener()
 
+    }
+
+    private fun setListener() {
+        binding.fabCreateStory.setOnClickListener {
+            startActivity(Intent(this, UploadStoryActivity::class.java))
+        }
     }
 
     private fun getAllStories(){
