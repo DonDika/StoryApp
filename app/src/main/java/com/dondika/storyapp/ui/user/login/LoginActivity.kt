@@ -1,16 +1,18 @@
 package com.dondika.storyapp.ui.user.login
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.dondika.storyapp.R
-import com.dondika.storyapp.data.remote.user.LoginRequest
-import com.dondika.storyapp.data.remote.user.LoginResult
+import com.dondika.storyapp.data.remote.user.login.LoginRequest
+import com.dondika.storyapp.data.remote.user.login.LoginResult
 import com.dondika.storyapp.databinding.ActivityLoginBinding
 import com.dondika.storyapp.ui.home.HomeActivity
+import com.dondika.storyapp.ui.user.register.RegisterActivity
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -30,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        playAnimation()
         setupListener()
         setupObserver()
 
@@ -48,10 +51,12 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else -> {
                     val login = LoginRequest(email, password)
-                    //Log.e("CEK DATA", "setupListener: ${login.email} dan ${login.password}", )
                     loginViewModel.loginRequest(login)
                 }
             }
+        }
+        binding.registerButton.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
@@ -59,12 +64,14 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.loginResponse.observe(this){ loginResponse ->
             when(loginResponse){
                 is Result.Loading -> {
-
+                    onLoading(true)
                 }
                 is Result.Success -> loginResponse.data?.loginResult?.let {
+                    onLoading(false)
                     onSuccess(it)
                 }
                 is Result.Error -> {
+                    onLoading(false)
                     onFailed()
                 }
             }
@@ -72,9 +79,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun onLoading(isLoading: Boolean) {
+        if (isLoading){
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
 
     private fun onSuccess(loginResult: LoginResult){
-        Toast.makeText(this, "Welcome ${loginResult.name} your token ${loginResult.token}", Toast.LENGTH_SHORT).show()
+        loginViewModel.saveUser(loginResult.token)
+        Toast.makeText(this, "Welcome ${loginResult.name}!", Toast.LENGTH_SHORT).show()
         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
         intent.putExtra(HomeActivity.EXTRA_TOKEN, loginResult.token)
         startActivity(intent)
@@ -82,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onFailed(){
-        Snackbar.make(binding.root,"Cek your email & password", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(binding.root,getString(R.string.login_failed), Snackbar.LENGTH_LONG).show()
     }
 
 
@@ -95,6 +110,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.imageLogo, View.TRANSLATION_X, -60f, 60f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+    }
 
 
 

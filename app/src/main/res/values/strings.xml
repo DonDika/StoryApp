@@ -7,8 +7,49 @@
     <string name="must_filled">Must be filled</string>
 
 
+
+    <string name="button_text_register">Create account</string>
+    <string name="text_sign_in">Sign In</string>
+
+    <string name="text_register">Register</string>
+    <string name="image_logo">Image Logo</string>
+
+    <string name="register_success">Register Success!</string>
+    <string name="register_failed">Email is already used!</string>
+
+
+    <string name="login_failed">Cek again your email and password!</string>
+
+    <string name="hint_email">Enter your email</string>
+    <string name="hint_name">Enter your name</string>
+    <string name="hint_password">Enter you password</string>
+
+
+    <string name="button_text_dont_have_account">I don\'t have an account</string>
+
+    <string name="name_user">Name</string>
+    <string name="date">date</string>
+    <string name="desc">description</string>
+
+    <string name="language_setting">Language Seting</string>
+    <string name="action_signout">Sign out</string>
+
+
     <string name="created_add">Created at %1$s</string>
 
+
     <string name="hint_description_edit_text">Enter your description</string>
+    <string name="upload_permission">Not getting permissions!</string>
+    <string name="upload_desc">Description cannot be blank!</string>
+    <string name="upload_image">Image cannot be blank!</string>
+    <string name="upload_success">Story uploaded successfully!</string>
+    <string name="upload_failed">Story uploaded failed!</string>
+    <string name="fab_create_story">fab create story</string>
+    <string name="detail_image">Detail Image</string>
+    <string name="image_story">Image Story</string>
+    <string name="camera">camera</string>
+    <string name="gallery">gallery</string>
+    <string name="upload">upload</string>
+    <string name="image_preview">Image Preview</string>
 
 </resources>

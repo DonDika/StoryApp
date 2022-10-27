@@ -31,7 +31,6 @@ class StoryAdapter : ListAdapter<ListStoryItem, StoryAdapter.MyViewHolder>(DIFF_
 
     inner class MyViewHolder(private val binding: ItemStoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(storiesData: ListStoryItem){
-            //Log.e("CEK BIND", "$storiesData" )
             binding.apply {
                 Glide.with(itemView)
                     .load(storiesData.photoUrl)

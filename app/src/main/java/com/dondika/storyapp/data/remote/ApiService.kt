@@ -2,8 +2,10 @@ package com.dondika.storyapp.data.remote
 
 import com.dondika.storyapp.data.remote.stories.StoryResponse
 import com.dondika.storyapp.data.remote.stories.UploadResponse
-import com.dondika.storyapp.data.remote.user.LoginRequest
-import com.dondika.storyapp.data.remote.user.LoginResponse
+import com.dondika.storyapp.data.remote.user.login.LoginRequest
+import com.dondika.storyapp.data.remote.user.login.LoginResponse
+import com.dondika.storyapp.data.remote.user.register.RegisterRequest
+import com.dondika.storyapp.data.remote.user.register.RegisterResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -17,6 +19,10 @@ interface ApiService {
         @Body loginRequest: LoginRequest
     ): Response<LoginResponse>
 
+    @POST("register")
+    suspend fun register(
+        @Body registerRequest: RegisterRequest
+    ): Response<RegisterResponse>
 
 
     @GET("stories")

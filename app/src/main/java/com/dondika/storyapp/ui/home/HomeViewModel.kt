@@ -22,9 +22,10 @@ class HomeViewModel(private val repository: UserRepository) : ViewModel()  {
         } catch (e: Exception) {
             _storyResponse.value = Result.Error(e.message)
         }
-
-
     }
 
+    fun deleteUser() = viewModelScope.launch {
+        repository.deleteUser()
+    }
 
 }

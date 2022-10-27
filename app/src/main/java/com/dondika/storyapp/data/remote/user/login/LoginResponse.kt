@@ -1,4 +1,4 @@
-package com.dondika.storyapp.data.remote.user
+package com.dondika.storyapp.data.remote.user.login
 
 import com.google.gson.annotations.SerializedName
 

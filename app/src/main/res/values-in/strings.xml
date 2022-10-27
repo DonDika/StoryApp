@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">StoryApp</string>
+
+
+    <string name="error_email_not_valid">Email salah</string>
+    <string name="error_password_not_valid">Kata sandi salah</string>
+
+    <string name="must_filled">Harus diisi</string>
+
+
+
+    <string name="button_text_register">Buat akun</string>
+    <string name="text_sign_in">Masuk</string>
+
+    <string name="text_register">Mendaftar</string>
+    <string name="image_logo">Image Logo</string>
+
+    <string name="register_success">Berhasil mendaftar!</string>
+    <string name="register_failed">Email telah digunakan!</string>
+
+
+    <string name="login_failed">Cek lagi email dan kata sandi anda!</string>
+
+    <string name="hint_email">Masukkan email anda</string>
+    <string name="hint_name">Masukkan nama anda</string>
+    <string name="hint_password">Masukkan kata sandi anda</string>
+
+
+    <string name="button_text_dont_have_account">Saya tidak memiliki akun</string>
+
+    <string name="name_user">Name</string>
+    <string name="date">date</string>
+    <string name="desc">description</string>
+
+    <string name="language_setting">Pengaturan Bahasa</string>
+    <string name="action_signout">Keluar</string>
+
+
+    <string name="created_add">Dibuat pada %1$s</string>
+
+
+    <string name="hint_description_edit_text">Masukkan Deskripsi</string>
+    <string name="upload_permission">Tidak mendapatkan izin!</string>
+    <string name="upload_desc">Deskripsi tidak boleh kosong!</string>
+    <string name="upload_image">Image tidak boleh kosong!</string>
+    <string name="upload_success">Story berhasil diunggah!</string>
+    <string name="upload_failed">Story gagal diunggah!</string>
+    <string name="fab_create_story">fab create story</string>
+    <string name="detail_image">Detail Image</string>
+    <string name="image_story">Image Story</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">Unggah</string>
+    <string name="image_preview">Image Preview</string>
+</resources>

@@ -10,11 +10,14 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.dondika.storyapp.R
 import com.dondika.storyapp.databinding.ActivityUploadStoryBinding
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
@@ -26,13 +29,12 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 
 class UploadStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUploadStoryBinding
-    private val viewModel: UploadStoryViewModel by viewModels() {
+    private val uploadViewModel: UploadStoryViewModel by viewModels() {
         UserViewModelFactory.getInstance(this)
     }
 
@@ -55,13 +57,9 @@ class UploadStoryActivity : AppCompatActivity() {
             val selectedImage: Uri = it.data?.data as Uri
             val myFile = Utils.uriToFile(selectedImage, this@UploadStoryActivity)
             getFile = myFile
-
             binding.imagePreview.setImageURI(selectedImage)
         }
     }
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,18 +74,16 @@ class UploadStoryActivity : AppCompatActivity() {
 
         setupListener()
         setupObserver()
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSION){
             if (!allPermissionGranted()){
-                //toast
+                Toast.makeText(this, getString(R.string.upload_permission), Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
-
     }
 
     private fun allPermissionGranted() = REQUIRED_PERMISSIONS.all {
@@ -107,26 +103,29 @@ class UploadStoryActivity : AppCompatActivity() {
     }
 
     private fun setupObserver(){
-        viewModel.uploadResponse.observe(this){ response ->
+        uploadViewModel.fetchUser().observe(this){ userToken ->
+            if (userToken != "")
+                token = userToken
+        }
+
+        uploadViewModel.uploadResponse.observe(this){ response ->
             when(response){
                 is Result.Loading -> {
-
+                    onLoading(true)
                 }
                 is Result.Success -> {
-
+                    onLoading(false)
+                    Toast.makeText(this, getString(R.string.upload_success), Toast.LENGTH_SHORT).show()
+                    finish()
                 }
                 is Result.Error -> {
-
+                    onLoading(false)
+                    Toast.makeText(this, getString(R.string.upload_failed), Toast.LENGTH_SHORT).show()
                 }
             }
 
         }
     }
-
-
-
-
-
 
     @SuppressLint("QueryPermissionsNeeded")
     private fun startTakePhoto(){
@@ -153,16 +152,15 @@ class UploadStoryActivity : AppCompatActivity() {
         launcherIntentGallery.launch(chooser)
     }
 
-
     private fun uploadStory(){
         val inputDescription = binding.inputDesc
         var isValid = true
         if (inputDescription.text.toString().isBlank()){
-            inputDescription.error = "Deskripsi tidak boleh kosong"
+            inputDescription.error = getString(R.string.upload_desc)
             isValid = false
         }
         if (getFile == null){
-            //toast
+            Toast.makeText(this, getString(R.string.upload_image), Toast.LENGTH_SHORT).show()
             isValid = false
         }
         if (isValid){
@@ -172,22 +170,15 @@ class UploadStoryActivity : AppCompatActivity() {
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo", file.name, requestImageFile
             )
-
-            viewModel.uploadStory(token, imageMultipart, description)
-
+            uploadViewModel.uploadStory(token, imageMultipart, description)
         }
-
-
-
-
     }
-
 
     private fun reduceFileImage(file: File): File{
         val bitmap = BitmapFactory.decodeFile(file.path)
         var compressQuality = 100
         var streamLength: Int
-        do{
+        do {
             val bmpStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
             val bmpPicByteArray = bmpStream.toByteArray()
@@ -198,13 +189,19 @@ class UploadStoryActivity : AppCompatActivity() {
         return file
     }
 
+    private fun onLoading(isLoading: Boolean){
+        if (isLoading){
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
 
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSION = 10
     }
-
-
 
 
 }

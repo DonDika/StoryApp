@@ -1,9 +1,6 @@
 package com.dondika.storyapp.ui.upload
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.dondika.storyapp.data.remote.stories.UploadResponse
 import com.dondika.storyapp.repository.UserRepository
 import com.dondika.storyapp.utils.Result
@@ -24,6 +21,10 @@ class UploadStoryViewModel(private val repository: UserRepository) : ViewModel()
         } catch (e: Exception){
             _uploadResponse.value = Result.Error(e.message.toString())
         }
+    }
+
+    fun fetchUser(): LiveData<String>{
+        return repository.fetchUser().asLiveData()
     }
 
 

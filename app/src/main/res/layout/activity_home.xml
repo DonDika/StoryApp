@@ -34,6 +34,6 @@
         android:src="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="FAB" />
+        android:contentDescription="@string/fab_create_story" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,12 +3,18 @@ package com.dondika.storyapp.ui.home
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dondika.storyapp.R
 import com.dondika.storyapp.data.remote.stories.ListStoryItem
 import com.dondika.storyapp.databinding.ActivityHomeBinding
 import com.dondika.storyapp.ui.detail.DetailActivity
 import com.dondika.storyapp.ui.upload.UploadStoryActivity
+import com.dondika.storyapp.ui.user.login.LoginActivity
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
 
@@ -16,11 +22,9 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var storyAdapter: StoryAdapter
-
     private val homeViewModel: HomeViewModel by viewModels{
         UserViewModelFactory.getInstance(this)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +34,33 @@ class HomeActivity : AppCompatActivity() {
         getAllStories()
         setAdapter()
         setListener()
-
     }
 
-    private fun setListener() {
-        binding.fabCreateStory.setOnClickListener {
-            startActivity(Intent(this, UploadStoryActivity::class.java))
+    override fun onResume() {
+        super.onResume()
+        getAllStories()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.home_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.action_sign_out -> {
+                homeViewModel.deleteUser()
+                startActivity(Intent(this@HomeActivity, LoginActivity::class.java))
+                finish()
+                true
+            }
+            R.id.menu_setting -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+                true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
     }
 
@@ -45,14 +70,14 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.storyResponse.observe(this){ result ->
             when(result){
                 is Result.Loading -> {
-
+                    onLoading(true)
                 }
                 is Result.Success -> result.data?.listStory?.let {
-                    //homeAdapter.setData(it)
+                    onLoading(false)
                     storyAdapter.submitList(it)
                 }
-                is Result.Error -> result.message?.let {
-
+                is Result.Error ->  {
+                    onLoading(false)
                 }
             }
 
@@ -75,10 +100,26 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
+    private fun setListener() {
+        binding.fabCreateStory.setOnClickListener {
+            startActivity(Intent(this, UploadStoryActivity::class.java))
+        }
+        binding.refreshStory.setOnRefreshListener {
+            getAllStories()
+        }
+    }
+
+    private fun onLoading(isLoading: Boolean){
+        binding.refreshStory.isRefreshing = isLoading
+    }
+
+    private fun onFailed(message: String){
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 
     companion object {
         const val EXTRA_TOKEN = "extra_token"
     }
-
 
 }

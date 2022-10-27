@@ -16,7 +16,6 @@ import java.util.*
 object Utils  {
 
     private const val FILENAME_FORMAT = "dd-MM-yyyy"
-
     private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
 
     fun uriToFile(selectedImg: Uri, context: Context): File{

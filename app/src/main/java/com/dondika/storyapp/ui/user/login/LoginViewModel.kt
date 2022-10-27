@@ -1,12 +1,11 @@
 package com.dondika.storyapp.ui.user.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dondika.storyapp.data.remote.user.LoginRequest
-import com.dondika.storyapp.data.remote.user.LoginResponse
+import com.dondika.storyapp.data.remote.user.login.LoginRequest
+import com.dondika.storyapp.data.remote.user.login.LoginResponse
 import com.dondika.storyapp.repository.UserRepository
 import com.dondika.storyapp.utils.Result
 import kotlinx.coroutines.launch
@@ -25,8 +24,11 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
 
         } catch (e: Exception){
             _loginResponse.value = Result.Error(e.message.toString())
-            //Log.e("CEK", e.message.toString(), )
         }
+    }
+
+    fun saveUser(token: String) = viewModelScope.launch {
+        repository.saveUser(token)
     }
 
 
