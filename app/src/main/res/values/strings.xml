@@ -7,7 +7,6 @@
     <string name="must_filled">Must be filled</string>
 
 
-
     <string name="button_text_register">Create account</string>
     <string name="text_sign_in">Sign In</string>
 
@@ -51,5 +50,12 @@
     <string name="gallery">gallery</string>
     <string name="upload">upload</string>
     <string name="image_preview">Image Preview</string>
+    
+    
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_map">Map</string>
+
+    
 
 </resources>

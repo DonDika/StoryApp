@@ -11,7 +11,7 @@ import com.dondika.storyapp.R
 import com.dondika.storyapp.data.remote.user.login.LoginRequest
 import com.dondika.storyapp.data.remote.user.login.LoginResult
 import com.dondika.storyapp.databinding.ActivityLoginBinding
-import com.dondika.storyapp.ui.home.HomeActivity
+import com.dondika.storyapp.ui.MainActivity
 import com.dondika.storyapp.ui.user.register.RegisterActivity
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
@@ -90,8 +90,8 @@ class LoginActivity : AppCompatActivity() {
     private fun onSuccess(loginResult: LoginResult){
         loginViewModel.saveUser(loginResult.token)
         Toast.makeText(this, "Welcome ${loginResult.name}!", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-        intent.putExtra(HomeActivity.EXTRA_TOKEN, loginResult.token)
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        intent.putExtra(MainActivity.EXTRA_TOKEN, loginResult.token)
         startActivity(intent)
         finish()
     }

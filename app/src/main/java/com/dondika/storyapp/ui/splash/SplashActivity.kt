@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.dondika.storyapp.ui.home.HomeActivity
+import com.dondika.storyapp.ui.MainActivity
 import com.dondika.storyapp.ui.user.login.LoginActivity
 import com.dondika.storyapp.utils.UserViewModelFactory
 
@@ -25,7 +25,8 @@ class SplashActivity : AppCompatActivity() {
     private fun validateUser() {
         splashViewModel.fetchUser().observe(this){ token ->
             if (token != ""){
-                startActivity(Intent(this@SplashActivity, HomeActivity::class.java).putExtra(HomeActivity.EXTRA_TOKEN, token))
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java)
+                    .putExtra(MainActivity.EXTRA_TOKEN, token))
                 finish()
             } else {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))

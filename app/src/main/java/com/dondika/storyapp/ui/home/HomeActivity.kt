@@ -22,6 +22,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var storyAdapter: StoryAdapter
+
     private val homeViewModel: HomeViewModel by viewModels{
         UserViewModelFactory.getInstance(this)
     }
@@ -54,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
                 finish()
                 true
             }
-            R.id.menu_setting -> {
+            R.id.setting_language -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
@@ -80,7 +81,6 @@ class HomeActivity : AppCompatActivity() {
                     onLoading(false)
                 }
             }
-
         }
     }
 

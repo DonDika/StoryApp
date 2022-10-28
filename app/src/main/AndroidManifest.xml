@@ -24,15 +24,23 @@
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
 
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_API_KEY" />
+
+
         <activity
             android:name=".ui.upload.UploadStoryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.detail.DetailActivity"
             android:exported="false" />
+
         <activity
-            android:name=".ui.home.HomeActivity"
-            android:exported="false" />
+            android:name=".ui.MainActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".ui.user.register.RegisterActivity"
             android:exported="false" />
