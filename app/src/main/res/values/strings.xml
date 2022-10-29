@@ -56,6 +56,11 @@
     <string name="title_home">Home</string>
     <string name="title_map">Map</string>
 
-    
+
+    <string name="please_activate_location_message">Please activate your location services</string>
+    <string name="style_map_failed">Style parsing failed.</string>
+    <string name="style_map_error">Can\'t find style. Error: %s</string>
+    <string name="try_again">Try Again</string>
+
 
 </resources>

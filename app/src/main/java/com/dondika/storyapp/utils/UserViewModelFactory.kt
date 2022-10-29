@@ -48,7 +48,7 @@ class UserViewModelFactory(private val repository: UserRepository) : ViewModelPr
         private var INSTANCE: UserViewModelFactory? = null
         fun getInstance(context: Context): UserViewModelFactory {
             return INSTANCE ?: synchronized(this){
-                UserViewModelFactory(Injection.provideRepository(context.dataStore)).also {
+                UserViewModelFactory(Injection.provideRepository(context, context.dataStore)).also {
                     INSTANCE = it
                 }
             }

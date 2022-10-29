@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dondika.storyapp.R
+import com.dondika.storyapp.data.local.room.StoryEntity
 import com.dondika.storyapp.data.remote.stories.ListStoryItem
 import com.dondika.storyapp.databinding.FragmentHomeBinding
 import com.dondika.storyapp.ui.MainActivity
@@ -22,7 +23,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var storyAdapter: StoryAdapter
+    private lateinit var storyAdapter: HomeAdapter
 
     private val homeViewModel: HomeViewModel by viewModels {
         UserViewModelFactory.getInstance(requireContext())
@@ -53,19 +54,24 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapter(){
-        storyAdapter = StoryAdapter()
+        storyAdapter = HomeAdapter()
         binding.rvStories.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            adapter = storyAdapter
+            adapter = storyAdapter.withLoadStateFooter(
+                footer = LoadingStateAdapter {
+                    storyAdapter.retry()
+                }
+            )
         }
-        storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback{
-            override fun onItemClicked(listStoryItem: ListStoryItem) {
+        storyAdapter.setOnItemClickCallback(object : HomeAdapter.OnItemClickCallback{
+            override fun onItemClicked(storyData: StoryEntity) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
-                intent.putExtra(DetailActivity.EXTRA_USER, listStoryItem)
+                intent.putExtra(DetailActivity.EXTRA_USER, storyData)
                 startActivity(intent)
             }
         })
+
     }
 
     private fun setListener(){
@@ -74,12 +80,18 @@ class HomeFragment : Fragment() {
         }
         binding.refreshStory.setOnRefreshListener {
             getAllStories()
+            storyAdapter.refresh()
+            binding.refreshStory.isRefreshing = false
         }
     }
 
     private fun getAllStories(){
         val token = requireActivity().intent.getStringExtra(MainActivity.EXTRA_TOKEN).toString()
-        homeViewModel.getAllStories(token)
+        homeViewModel.fetchAllStories(token).observe(viewLifecycleOwner){
+            storyAdapter.submitData(lifecycle, it)
+        }
+
+        /*homeViewModel.getAllStories(token)
         homeViewModel.storyResponse.observe(viewLifecycleOwner){ result ->
             when(result){
                 is Result.Loading ->{
@@ -92,7 +104,7 @@ class HomeFragment : Fragment() {
 
                 }
             }
-        }
+        }*/
     }
 
 

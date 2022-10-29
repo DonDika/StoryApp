@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.dondika.storyapp.R
-import com.dondika.storyapp.data.remote.stories.ListStoryItem
+import com.dondika.storyapp.data.local.room.StoryEntity
 import com.dondika.storyapp.databinding.ActivityDetailBinding
 import com.dondika.storyapp.utils.Utils
 
@@ -18,7 +18,6 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setDetail()
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -27,7 +26,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setDetail(){
-        val userData = intent.getParcelableExtra<ListStoryItem>(EXTRA_USER)
+        val userData = intent.getParcelableExtra<StoryEntity>(EXTRA_USER)
         if (userData != null){
             binding.apply {
                 Glide.with(this@DetailActivity).load(userData.photoUrl).into(imgStories)

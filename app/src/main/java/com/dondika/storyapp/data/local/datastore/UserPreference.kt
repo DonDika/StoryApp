@@ -1,4 +1,4 @@
-package com.dondika.storyapp.data.local
+package com.dondika.storyapp.data.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -32,7 +32,7 @@ class UserPreference(private val dataStore: DataStore<Preferences>) {
         private var INSTANCE: UserPreference? = null
         private val TOKEN_KEY = stringPreferencesKey("token")
 
-        fun getInstance(dataStore: DataStore<Preferences>): UserPreference{
+        fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this){
                 UserPreference(dataStore).also {
                     INSTANCE = it
