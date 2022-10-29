@@ -17,8 +17,10 @@ class UserRepository private constructor(
 
     suspend fun getAllStories(token: String) = apiService.getAllStories("Bearer $token")
 
-    suspend fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody) =
-        apiService.uploadImage("Bearer $token", file, description)
+
+    suspend fun uploadStory(token: String, file: MultipartBody.Part,
+                            description: RequestBody, lat: RequestBody?, lon: RequestBody?) =
+        apiService.uploadImage("Bearer $token", file, description, lat, lon)
 
 
     suspend fun saveUser(token: String) = pref.saveUser(token)

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_maps"
         android:name="com.dondika.storyapp.ui.map.MapsFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_maps" />

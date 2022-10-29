@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,9 +23,13 @@ import com.dondika.storyapp.databinding.ActivityUploadStoryBinding
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
 import com.dondika.storyapp.utils.Utils
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.material.snackbar.Snackbar
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
@@ -38,9 +43,12 @@ class UploadStoryActivity : AppCompatActivity() {
         UserViewModelFactory.getInstance(this)
     }
 
-    private var getFile: File? = null
     private lateinit var token: String
     private lateinit var currentPhotoPath: String
+
+    private var getFile: File? = null
+    private var location: Location? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val launcherIntentCamera = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
         if (it.resultCode == RESULT_OK){
@@ -61,6 +69,19 @@ class UploadStoryActivity : AppCompatActivity() {
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){permission ->
+        when {
+            permission[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                getCurrentLocation()
+            }
+            else -> {
+                //Snackbar.make()
+                binding.switchLoc.isChecked = false
+            }
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUploadStoryBinding.inflate(layoutInflater)
@@ -71,6 +92,8 @@ class UploadStoryActivity : AppCompatActivity() {
                 this@UploadStoryActivity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSION
             )
         }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         setupListener()
         setupObserver()
@@ -99,6 +122,13 @@ class UploadStoryActivity : AppCompatActivity() {
         }
         binding.buttonUpload.setOnClickListener {
             uploadStory()
+        }
+        binding.switchLoc.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                getCurrentLocation()
+            } else {
+                this.location = null
+            }
         }
     }
 
@@ -170,7 +200,16 @@ class UploadStoryActivity : AppCompatActivity() {
             val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
                 "photo", file.name, requestImageFile
             )
-            uploadViewModel.uploadStory(token, imageMultipart, description)
+
+            var lat: RequestBody? = null
+            var lon: RequestBody? = null
+
+            if (location != null){
+                lat = location?.latitude.toString().toRequestBody("text/plain".toMediaType())
+                lon = location?.longitude.toString().toRequestBody("text/plain".toMediaType())
+            }
+
+            uploadViewModel.uploadStory(token, imageMultipart, description, lat, lon)
         }
     }
 
@@ -197,6 +236,25 @@ class UploadStoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun getCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                PackageManager.PERMISSION_GRANTED){
+            fusedLocationClient.lastLocation.addOnSuccessListener { currentLocation ->
+                if (currentLocation != null){
+                    this.location = currentLocation
+                } else {
+                    //Toast.makeText(, "", Toast.LENGTH_SHORT).show()
+                    binding.switchLoc.isChecked = false
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            )
+        }
+    }
 
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)

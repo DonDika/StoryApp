@@ -68,7 +68,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
 
-
     //viewModels Act
     implementation "androidx.activity:activity-ktx:1.4.0"
 
@@ -81,5 +80,9 @@ dependencies {
     //navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+
+    // Location
+    implementation 'com.google.android.gms:play-services-location:21.0.0'
+
 
 }
