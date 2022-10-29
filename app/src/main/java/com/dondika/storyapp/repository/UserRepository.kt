@@ -15,7 +15,12 @@ class UserRepository private constructor(
 
     suspend fun register(registerRequest: RegisterRequest) = apiService.register(registerRequest)
 
+
     suspend fun getAllStories(token: String) = apiService.getAllStories("Bearer $token")
+
+
+    suspend fun getAllStoriesWithLocation(token: String) =
+        apiService.getAllStories("Bearer $token", size = 20, location = 1)
 
 
     suspend fun uploadStory(token: String, file: MultipartBody.Part,
