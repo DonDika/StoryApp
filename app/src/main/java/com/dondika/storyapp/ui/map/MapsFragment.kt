@@ -40,8 +40,9 @@ class MapsFragment : Fragment() {
     }
 
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()){ isGranted ->
-        if (isGranted){
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
             getCurrentLocation()
         }
     }

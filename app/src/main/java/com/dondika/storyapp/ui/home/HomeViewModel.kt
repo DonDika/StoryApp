@@ -14,9 +14,6 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: UserRepository) : ViewModel()  {
 
-    private val _storyResponse = MutableLiveData<Result<StoryResponse>>()
-    val storyResponse: LiveData<Result<StoryResponse>> = _storyResponse
-
     fun getAllStories(token: String): LiveData<PagingData<StoryEntity>> =
         repository.getAllStories(token).cachedIn(viewModelScope)
 

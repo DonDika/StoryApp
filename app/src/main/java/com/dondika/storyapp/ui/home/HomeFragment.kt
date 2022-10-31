@@ -19,13 +19,10 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var storyAdapter: StoryAdapter
-
     private val homeViewModel: HomeViewModel by viewModels {
         UserViewModelFactory.getInstance(requireContext())
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -48,6 +45,14 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+
+    private fun getAllStories(){
+        val token = requireActivity().intent.getStringExtra(MainActivity.EXTRA_TOKEN).toString()
+        homeViewModel.getAllStories(token).observe(viewLifecycleOwner){
+            storyAdapter.submitData(lifecycle, it)
+        }
     }
 
     private fun setAdapter(){
@@ -79,13 +84,6 @@ class HomeFragment : Fragment() {
             getAllStories()
             storyAdapter.refresh()
             binding.refreshStory.isRefreshing = false
-        }
-    }
-
-    private fun getAllStories(){
-        val token = requireActivity().intent.getStringExtra(MainActivity.EXTRA_TOKEN).toString()
-        homeViewModel.getAllStories(token).observe(viewLifecycleOwner){
-            storyAdapter.submitData(lifecycle, it)
         }
     }
 
