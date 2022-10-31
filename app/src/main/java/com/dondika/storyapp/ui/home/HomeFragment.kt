@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dondika.storyapp.R
 import com.dondika.storyapp.data.local.room.StoryEntity
-import com.dondika.storyapp.data.remote.stories.ListStoryItem
 import com.dondika.storyapp.databinding.FragmentHomeBinding
 import com.dondika.storyapp.ui.MainActivity
 import com.dondika.storyapp.ui.detail.DetailActivity
 import com.dondika.storyapp.ui.upload.UploadStoryActivity
-import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory
 
 class HomeFragment : Fragment() {
@@ -23,7 +20,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var storyAdapter: HomeAdapter
+    private lateinit var storyAdapter: StoryAdapter
 
     private val homeViewModel: HomeViewModel by viewModels {
         UserViewModelFactory.getInstance(requireContext())
@@ -54,7 +51,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapter(){
-        storyAdapter = HomeAdapter()
+        storyAdapter = StoryAdapter()
         binding.rvStories.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
@@ -64,7 +61,7 @@ class HomeFragment : Fragment() {
                 }
             )
         }
-        storyAdapter.setOnItemClickCallback(object : HomeAdapter.OnItemClickCallback{
+        storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback{
             override fun onItemClicked(storyData: StoryEntity) {
                 val intent = Intent(requireContext(), DetailActivity::class.java)
                 intent.putExtra(DetailActivity.EXTRA_USER, storyData)
@@ -87,24 +84,9 @@ class HomeFragment : Fragment() {
 
     private fun getAllStories(){
         val token = requireActivity().intent.getStringExtra(MainActivity.EXTRA_TOKEN).toString()
-        homeViewModel.fetchAllStories(token).observe(viewLifecycleOwner){
+        homeViewModel.getAllStories(token).observe(viewLifecycleOwner){
             storyAdapter.submitData(lifecycle, it)
         }
-
-        /*homeViewModel.getAllStories(token)
-        homeViewModel.storyResponse.observe(viewLifecycleOwner){ result ->
-            when(result){
-                is Result.Loading ->{
-
-                }
-                is Result.Success -> result.data?.listStory?.let {
-                    storyAdapter.submitList(it)
-                }
-                is Result.Error -> {
-
-                }
-            }
-        }*/
     }
 
 

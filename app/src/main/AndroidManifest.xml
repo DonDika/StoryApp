@@ -16,9 +16,6 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
-
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -30,11 +27,9 @@
         android:theme="@style/Theme.StoryApp"
         tools:targetApi="31">
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAYmjp_4eP65go9My1mlp4VtmfpF3vHtj4" />
-
 
         <activity
             android:name=".ui.upload.UploadStoryActivity"
@@ -42,11 +37,9 @@
         <activity
             android:name=".ui.detail.DetailActivity"
             android:exported="false" />
-
         <activity
             android:name=".ui.MainActivity"
             android:exported="false"/>
-
         <activity
             android:name=".ui.user.register.RegisterActivity"
             android:exported="false" />

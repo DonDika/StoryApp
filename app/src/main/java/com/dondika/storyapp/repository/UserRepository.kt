@@ -22,11 +22,8 @@ class UserRepository private constructor(
 
     suspend fun register(registerRequest: RegisterRequest) = apiService.register(registerRequest)
 
-    suspend fun getAllStories(token: String) = apiService.getAllStories("Bearer $token")
-
-
     @OptIn(ExperimentalPagingApi::class)
-    fun pagingGetAllStories(token:String): LiveData<PagingData<StoryEntity>>{
+    fun getAllStories(token:String): LiveData<PagingData<StoryEntity>>{
         return Pager(
             config = PagingConfig(pageSize = 10),
             remoteMediator = StoryRemoteMediator(token, apiService, storyDatabase),
@@ -42,7 +39,6 @@ class UserRepository private constructor(
     suspend fun uploadStory(token: String, file: MultipartBody.Part,
                             description: RequestBody, lat: RequestBody?, lon: RequestBody?) =
         apiService.uploadImage("Bearer $token", file, description, lat, lon)
-
 
     suspend fun saveUser(token: String) = pref.saveUser(token)
 

@@ -17,18 +17,8 @@ class HomeViewModel(private val repository: UserRepository) : ViewModel()  {
     private val _storyResponse = MutableLiveData<Result<StoryResponse>>()
     val storyResponse: LiveData<Result<StoryResponse>> = _storyResponse
 
-    fun getAllStories(token: String) = viewModelScope.launch {
-        _storyResponse.value = Result.Loading()
-        try {
-            val response = repository.getAllStories(token)
-            _storyResponse.value = Result.Success(response.body()!!)
-        } catch (e: Exception) {
-            _storyResponse.value = Result.Error(e.message)
-        }
-    }
-
-    fun fetchAllStories(token: String): LiveData<PagingData<StoryEntity>> =
-        repository.pagingGetAllStories(token).cachedIn(viewModelScope)
+    fun getAllStories(token: String): LiveData<PagingData<StoryEntity>> =
+        repository.getAllStories(token).cachedIn(viewModelScope)
 
     fun deleteUser() = viewModelScope.launch {
         repository.deleteUser()
