@@ -11,6 +11,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -96,7 +97,6 @@ class UploadStoryActivity : AppCompatActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         setupListener()
-        setupObserver()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray){
@@ -132,30 +132,6 @@ class UploadStoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupObserver(){
-        uploadViewModel.fetchUser().observe(this){ userToken ->
-            if (userToken != "")
-                token = userToken
-        }
-
-        uploadViewModel.uploadResponse.observe(this){ response ->
-            when(response){
-                is Result.Loading -> {
-                    onLoading(true)
-                }
-                is Result.Success -> {
-                    onLoading(false)
-                    Toast.makeText(this, getString(R.string.upload_success), Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-                is Result.Error -> {
-                    onLoading(false)
-                    Toast.makeText(this, getString(R.string.upload_failed), Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        }
-    }
 
     @SuppressLint("QueryPermissionsNeeded")
     private fun startTakePhoto(){
@@ -183,6 +159,12 @@ class UploadStoryActivity : AppCompatActivity() {
     }
 
     private fun uploadStory(){
+        uploadViewModel.fetchUser().observe(this){ userToken ->
+            Log.e("cek", "tokenAct $userToken" )
+            if (userToken != "")
+                token = userToken
+        }
+
         val inputDescription = binding.inputDesc
         var isValid = true
         if (inputDescription.text.toString().isBlank()){
@@ -209,7 +191,22 @@ class UploadStoryActivity : AppCompatActivity() {
                 lon = location?.longitude.toString().toRequestBody("text/plain".toMediaType())
             }
 
-            uploadViewModel.uploadStory(token, imageMultipart, description, lat, lon)
+            uploadViewModel.uploadStory(token, imageMultipart, description, lat, lon).observe(this){ uploadResponse ->
+                when(uploadResponse){
+                    is Result.Loading -> {
+                        onLoading(true)
+                    }
+                    is Result.Success -> {
+                        onLoading(false)
+                        Toast.makeText(this, getString(R.string.upload_success), Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    is Result.Error -> {
+                        onLoading(false)
+                        Toast.makeText(this, getString(R.string.upload_failed), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 

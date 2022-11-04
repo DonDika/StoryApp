@@ -28,7 +28,6 @@ class RegisterActivity : AppCompatActivity() {
 
         playAnimation()
         setupListener()
-        setupObserver()
     }
 
 
@@ -46,28 +45,23 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 else -> {
                     val register = RegisterRequest(name, email, password)
-                    registerViewModel.register(register)
+                    registerViewModel.registerUser(register).observe(this){ registerResponse ->
+                        when(registerResponse){
+                            is Result.Loading -> {
+                                onLoading(true)
+                            }
+                            is Result.Success -> {
+                                onLoading(false)
+                                onSuccess()
+                            }
+                            is Result.Error -> {
+                                onLoading(false)
+                                onFailed()
+                            }
+                        }
+                    }
                 }
             }
-        }
-    }
-
-    private fun setupObserver(){
-        registerViewModel.registerResponse.observe(this){ registerResponse ->
-            when(registerResponse){
-                is Result.Loading -> {
-                    onLoading(true)
-                }
-                is Result.Success -> {
-                    onLoading(false)
-                    onSuccess()
-                }
-                is Result.Error -> {
-                    onLoading(false)
-                    onFailed()
-                }
-            }
-
         }
     }
 

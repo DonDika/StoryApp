@@ -34,7 +34,6 @@ class LoginActivity : AppCompatActivity() {
 
         playAnimation()
         setupListener()
-        setupObserver()
 
     }
 
@@ -51,7 +50,21 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else -> {
                     val login = LoginRequest(email, password)
-                    loginViewModel.loginRequest(login)
+                    loginViewModel.loginUser(login).observe(this){ loginResponse ->
+                        when(loginResponse){
+                            is Result.Loading -> {
+                                onLoading(true)
+                            }
+                            is Result.Success -> loginResponse.data?.loginResult?.let {
+                                onLoading(false)
+                                onSuccess(it)
+                            }
+                            is Result.Error -> {
+                                onLoading(false)
+                                onFailed()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -60,24 +73,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupObserver(){
-        loginViewModel.loginResponse.observe(this){ loginResponse ->
-            when(loginResponse){
-                is Result.Loading -> {
-                    onLoading(true)
-                }
-                is Result.Success -> loginResponse.data?.loginResult?.let {
-                    onLoading(false)
-                    onSuccess(it)
-                }
-                is Result.Error -> {
-                    onLoading(false)
-                    onFailed()
-                }
-            }
-
-        }
-    }
 
     private fun onLoading(isLoading: Boolean) {
         if (isLoading){

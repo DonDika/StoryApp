@@ -8,7 +8,6 @@ import com.dondika.storyapp.data.remote.user.register.RegisterRequest
 import com.dondika.storyapp.data.remote.user.register.RegisterResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -17,12 +16,13 @@ interface ApiService {
     @POST("login")
     suspend fun login(
         @Body loginRequest: LoginRequest
-    ): Response<LoginResponse>
+    ): LoginResponse
+
 
     @POST("register")
     suspend fun register(
         @Body registerRequest: RegisterRequest
-    ): Response<RegisterResponse>
+    ): RegisterResponse
 
 
     @GET("stories")
@@ -31,17 +31,18 @@ interface ApiService {
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null,
         @Query("location") location: Int? = null
-    ): Response<StoryResponse>
+    ): StoryResponse
+
 
     @Multipart
     @POST("stories")
-    suspend fun uploadImage(
+    suspend fun uploadStory(
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
         @Part("lat") lat: RequestBody?,
         @Part("lon") lon: RequestBody?
-    ): Response<UploadResponse>
+    ): UploadResponse
 
 
 }

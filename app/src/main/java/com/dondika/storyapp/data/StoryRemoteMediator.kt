@@ -46,7 +46,7 @@ class StoryRemoteMediator(
 
         try {
             val responseData = api.getAllStories("Bearer $token", page, state.config.pageSize)
-            val endOfPaginationReached = responseData.body()!!.listStory.isNullOrEmpty()
+            val endOfPaginationReached = responseData.listStory.isNullOrEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH){
@@ -55,11 +55,11 @@ class StoryRemoteMediator(
                 }
                 val prevKey = if (page == 1) null else -1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val key = responseData.body()!!.listStory.map {
+                val key = responseData.listStory.map {
                     RemoteKeysEntity(it.id, prevKey, nextKey)
                 }
                 database.remoteKeysDao().insertAll(key)
-                responseData.body()!!.listStory.forEach { listStoryItem ->
+                responseData.listStory.forEach { listStoryItem ->
                     val storyData = StoryEntity(
                         listStoryItem.id,
                         listStoryItem.name,

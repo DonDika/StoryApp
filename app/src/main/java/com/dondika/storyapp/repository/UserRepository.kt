@@ -1,14 +1,20 @@
 package com.dondika.storyapp.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import androidx.paging.*
 import com.dondika.storyapp.data.StoryRemoteMediator
 import com.dondika.storyapp.data.local.datastore.UserPreference
 import com.dondika.storyapp.data.local.room.StoryDatabase
 import com.dondika.storyapp.data.local.room.StoryEntity
 import com.dondika.storyapp.data.remote.ApiService
+import com.dondika.storyapp.data.remote.stories.StoryResponse
+import com.dondika.storyapp.data.remote.stories.UploadResponse
 import com.dondika.storyapp.data.remote.user.login.LoginRequest
+import com.dondika.storyapp.data.remote.user.login.LoginResponse
 import com.dondika.storyapp.data.remote.user.register.RegisterRequest
+import com.dondika.storyapp.data.remote.user.register.RegisterResponse
+import com.dondika.storyapp.utils.Result
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -18,9 +24,38 @@ class UserRepository private constructor(
     private val storyDatabase: StoryDatabase
 ){
 
-    suspend fun login(loginRequest: LoginRequest) = apiService.login(loginRequest)
+    fun loginUser(loginRequest: LoginRequest): LiveData<Result<LoginResponse>> = liveData {
+        emit(Result.Loading())
+        try {
+            val response = apiService.login(loginRequest)
+            emit(Result.Success(response))
+        } catch (e: Exception){
+            emit(Result.Error(e.message.toString()))
+        }
+    }
 
-    suspend fun register(registerRequest: RegisterRequest) = apiService.register(registerRequest)
+
+    fun registerUser(registerRequest: RegisterRequest): LiveData<Result<RegisterResponse>> = liveData {
+        emit(Result.Loading())
+        try {
+            val response = apiService.register(registerRequest)
+            emit(Result.Success(response))
+        } catch (e: Exception){
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    fun uploadStory(token: String, file: MultipartBody.Part, description: RequestBody,
+                    lat: RequestBody?, lon: RequestBody?): LiveData<Result<UploadResponse>> = liveData {
+        emit(Result.Loading())
+        try {
+            val response = apiService.uploadStory("Bearer $token", file, description, lat, lon)
+            emit(Result.Success(response))
+        } catch (e: Exception){
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
 
     @OptIn(ExperimentalPagingApi::class)
     fun getAllStories(token:String): LiveData<PagingData<StoryEntity>>{
@@ -33,14 +68,23 @@ class UserRepository private constructor(
         ).liveData
     }
 
-    suspend fun getAllStoriesWithLocation(token: String) =
-        apiService.getAllStories("Bearer $token", size = 20, location = 1)
 
-    suspend fun uploadStory(token: String, file: MultipartBody.Part,
-                            description: RequestBody, lat: RequestBody?, lon: RequestBody?) =
-        apiService.uploadImage("Bearer $token", file, description, lat, lon)
+    fun getAllStoriesWithLocation(token: String): LiveData<Result<StoryResponse>> = liveData {
+        emit(Result.Loading())
+        try {
+            val response = apiService.getAllStories("Bearer $token", size = 20, location = 1)
+            emit(Result.Success(response))
+        } catch (e: Exception){
+            emit(Result.Error(e.message.toString()))
+        }
+    }
 
-    suspend fun saveUser(token: String) = pref.saveUser(token)
+
+
+
+    suspend fun saveUser(token: String) {
+        pref.saveUser(token)
+    }
 
     fun fetchUser() = pref.fetchUser()
 
