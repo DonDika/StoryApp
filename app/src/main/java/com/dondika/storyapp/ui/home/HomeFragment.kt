@@ -47,7 +47,6 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-
     private fun getAllStories(){
         val token = requireActivity().intent.getStringExtra(MainActivity.EXTRA_TOKEN).toString()
         homeViewModel.getAllStories(token).observe(viewLifecycleOwner){
@@ -65,6 +64,7 @@ class HomeFragment : Fragment() {
                     storyAdapter.retry()
                 }
             )
+            //(layoutManager as LinearLayoutManager).scrollToPosition(0)
         }
         storyAdapter.setOnItemClickCallback(object : StoryAdapter.OnItemClickCallback{
             override fun onItemClicked(storyData: StoryEntity) {
@@ -73,7 +73,6 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
             }
         })
-
     }
 
     private fun setListener(){
@@ -86,6 +85,5 @@ class HomeFragment : Fragment() {
             binding.refreshStory.isRefreshing = false
         }
     }
-
 
 }

@@ -10,7 +10,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 
-
 interface ApiService {
 
     @POST("login")
@@ -18,12 +17,10 @@ interface ApiService {
         @Body loginRequest: LoginRequest
     ): LoginResponse
 
-
     @POST("register")
     suspend fun register(
         @Body registerRequest: RegisterRequest
     ): RegisterResponse
-
 
     @GET("stories")
     suspend fun getAllStories(
@@ -32,7 +29,6 @@ interface ApiService {
         @Query("size") size: Int? = null,
         @Query("location") location: Int? = null
     ): StoryResponse
-
 
     @Multipart
     @POST("stories")
@@ -43,6 +39,5 @@ interface ApiService {
         @Part("lat") lat: RequestBody?,
         @Part("lon") lon: RequestBody?
     ): UploadResponse
-
 
 }

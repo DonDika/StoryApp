@@ -54,4 +54,17 @@
     <string name="gallery">Gallery</string>
     <string name="upload">Unggah</string>
     <string name="image_preview">Image Preview</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_map">Map</string>
+
+
+    <string name="please_activate_location_message">Aktifkan lokasi anda</string>
+    <string name="style_map_failed">Style parsing gagal.</string>
+    <string name="style_map_error">Can\'t find style. Error: %s</string>
+    <string name="try_again">Coba Lagi</string>
+
+
+
 </resources>

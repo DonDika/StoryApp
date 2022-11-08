@@ -3,10 +3,12 @@ package com.dondika.storyapp.ui.user.register
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import com.dondika.storyapp.R
 import com.dondika.storyapp.data.remote.user.register.RegisterRequest
+import com.dondika.storyapp.data.remote.user.register.RegisterResponse
 import com.dondika.storyapp.databinding.ActivityRegisterBinding
 import com.dondika.storyapp.utils.Result
 import com.dondika.storyapp.utils.UserViewModelFactory

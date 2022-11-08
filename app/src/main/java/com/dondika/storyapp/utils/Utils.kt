@@ -1,5 +1,6 @@
 package com.dondika.storyapp.utils
 
+import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.net.ParseException
@@ -18,6 +19,7 @@ object Utils  {
     private const val FILENAME_FORMAT = "dd-MM-yyyy"
     private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
 
+    @SuppressLint("SuspiciousIndentation")
     fun uriToFile(selectedImg: Uri, context: Context): File{
         val contentResolver: ContentResolver = context.contentResolver
         val myFile = createTempFile(context)

@@ -8,5 +8,4 @@ class MapsViewModel(private val repository: UserRepository) : ViewModel() {
 
     fun getAllStoriesWithLocation(token: String) = repository.getAllStoriesWithLocation(token)
 
-
 }

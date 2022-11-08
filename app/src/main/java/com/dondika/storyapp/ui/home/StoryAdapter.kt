@@ -44,7 +44,6 @@ class StoryAdapter : PagingDataAdapter<StoryEntity, StoryAdapter.MyViewHolder>(D
                     onItemClickCallback.onItemClicked(storyData)
                 }
             }
-
         }
     }
 
@@ -53,7 +52,7 @@ class StoryAdapter : PagingDataAdapter<StoryEntity, StoryAdapter.MyViewHolder>(D
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<StoryEntity> =
+         val DIFF_CALLBACK: DiffUtil.ItemCallback<StoryEntity> =
             object : DiffUtil.ItemCallback<StoryEntity>(){
                 override fun areItemsTheSame(oldItem: StoryEntity, newItem: StoryEntity): Boolean {
                     return oldItem.createdAt == newItem.createdAt

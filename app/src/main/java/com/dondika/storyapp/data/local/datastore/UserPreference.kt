@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreference(private val dataStore: DataStore<Preferences>) {
+interface IUserPreference
+
+class UserPreference(private val dataStore: DataStore<Preferences>) : IUserPreference {
 
     suspend fun saveUser(token: String){
         dataStore.edit { preferences ->

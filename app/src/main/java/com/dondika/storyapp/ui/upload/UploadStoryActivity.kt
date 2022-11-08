@@ -160,7 +160,7 @@ class UploadStoryActivity : AppCompatActivity() {
 
     private fun uploadStory(){
         uploadViewModel.fetchUser().observe(this){ userToken ->
-            Log.e("cek", "tokenAct $userToken" )
+            //Log.e("cek", "tokenAct $userToken" )
             if (userToken != "")
                 token = userToken
         }
@@ -199,6 +199,7 @@ class UploadStoryActivity : AppCompatActivity() {
                     is Result.Success -> {
                         onLoading(false)
                         Toast.makeText(this, getString(R.string.upload_success), Toast.LENGTH_SHORT).show()
+
                         finish()
                     }
                     is Result.Error -> {

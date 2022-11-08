@@ -1,0 +1,88 @@
+LoginViewModelTest()
+Login Successfully :
+Memastikan method userRepository.loginUser() telah dipanggil.
+Memastikan data tidak null.
+Memastikan mengembalikan Result.Success.
+Memastikan data sesuai dengan yang diharapkan.
+Login Failed :
+Memastikan method userRepository.loginUser() telah dipanggil.
+Memastikan data tidak null.
+Memastikan mengembalikan Result.Error
+Save Token :
+Memastikan method userRepository.loginUser() telah dipanggil.
+
+
+RegisterViewModelTest()
+Register Successfully :
+Memastikan method userRepository.regiterUser() telah dipanggil.
+Memastikan data tidak null.
+Memastikan mengembalikan Result.Success.
+Memastikan data sesuai dengan yang diharapkan.
+Register Failed :
+Memastikan method userRepository.regiterUser() telah dipanggil.
+Memastikan data tidak null.
+Memastikan mengembalikan Result.Error
+
+
+UploadViewModelTest()
+Upload Successfully :
+Memastikan method userRepository.uploadStory() telah dipanggil.
+Memastikan data tidak null.
+Memastikan mengembalikan Result.Success.
+Memastikan data sesuai dengan yang diharapkan.
+Upload Failed :
+Memastikan method userRepository.uploadStory() telah dipanggil.
+Memastikan data tidak null.
+Memastikan mengembalikan Result.Error
+Fetch Token :
+Memastikan method userRepository.fetchUser() telah dipanggil.
+Memastikan token tidak null
+
+
+SplashViewModelTest()
+Fetch Token :
+Memastikan method userRepository.fetchUser() telah dipanggil.
+Memastikan token tidak null.
+
+
+MapsViewModelTest()
+Get Story With Location Successfully :
+Memastikan method userRepository.getAllStoriesWithLocation() telah dipanggil.
+Memastikan data tidak null.
+Memastikan mengembalikan Result.Success.
+Memastikan data sesuai dengan yang diharapkan.
+Get Story With LocationFailed :
+Memastikan method userRepository.getAllStoriesWithLocation() telah dipanggil.
+Memastikan mengembalikan Result.Error
+
+
+HomeViewModelTest()
+Get All Stories With Paging Successfully :
+Memastikan method userRepository.getAllStories() telah dipanggil.
+Memastikan data tidak null.
+Delete Token Successfully :
+Memastikan method userRepository.deleteUser() telah dipanggil.
+
+
+UserRepositoryTest(()
+Login Successfully :
+Memastikan response tidak null.
+Register Successfully :
+Memastikan response tidak null.
+Upload Story Successfully :
+Memastikan response tidak null.
+Get All Stories With Paging Successfully :
+Memastikan response tidak null.
+Memastikan jumlah data asli dengan data dummy sama.
+Get Story With Location Successfully :
+Memastikan response tidak null.
+Save Token Successfully :
+Memastikan method userPreference.saveUser() telah dipanggil.
+Fetch User Successfully :
+Memastikan token tidak null.
+Memastikan method userPreference.fetchUser() telah dipanggil.
+Delete User Successfully:
+Memastikan method userPreference.deleteUser() telah dipanggil.
+
+
+

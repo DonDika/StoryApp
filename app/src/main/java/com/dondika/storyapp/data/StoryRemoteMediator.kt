@@ -1,4 +1,3 @@
-
 package com.dondika.storyapp.data
 
 import androidx.paging.ExperimentalPagingApi
@@ -46,7 +45,7 @@ class StoryRemoteMediator(
 
         try {
             val responseData = api.getAllStories("Bearer $token", page, state.config.pageSize)
-            val endOfPaginationReached = responseData.listStory.isNullOrEmpty()
+            val endOfPaginationReached = responseData.listStory.isEmpty()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH){
