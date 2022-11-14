@@ -52,7 +52,7 @@ class UserRepository constructor(
         description: RequestBody,
         lat: RequestBody?,
         lon: RequestBody?)
-    : LiveData<Result<UploadResponse>> = liveData {
+    : LiveData <Result<UploadResponse>> = liveData {
         emit(Result.Loading())
         try {
             val response = apiService.uploadStory("Bearer $token", file, description, lat, lon)

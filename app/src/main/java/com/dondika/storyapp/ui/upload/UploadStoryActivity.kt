@@ -40,7 +40,7 @@ import java.io.FileOutputStream
 class UploadStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUploadStoryBinding
-    private val uploadViewModel: UploadStoryViewModel by viewModels() {
+    private val uploadViewModel: UploadStoryViewModel by viewModels {
         UserViewModelFactory.getInstance(this)
     }
 
